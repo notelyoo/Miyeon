@@ -1,0 +1,102 @@
+<!-------------------------------------------------------
+  📁 File: home.html
+  🧑‍💻 Developed by: Elyoo (NotElyoo)
+  🌐 Website: https://miyeon.fr
+  📬 Contact: contact@miyeon.fr
+  ------------------------------------------------------->
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Miyeon - Home</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body class="home-page">
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/home" class="active">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/collection">Collection</a></li>
+      </ul>
+      <div class="admin-login">
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="banner">
+      <img src="images/banner.jpg" alt="Hero Banner">
+      <h1>Welcome to Miyeon.fr 🌸</h1>
+    </div>
+    <section class="about-container">
+      <div class="column col-1">
+        <div class="about-block">
+          <h2>Welcome 👋</h2>
+          <p>
+            Hello! My name is Elyoo. I'm passionate about KarmineCorp, Formula 1 and K‑pop. I love sharing my experiences and favorites with you 🌟
+          </p>
+        </div>
+        <div class="about-block">
+          <h2>Coming Soon 📱</h2>
+          <p>
+            Interactive features powered by APIs will be added soon. Stay tuned!
+          </p>
+        </div>
+      </div>
+      <div class="column col-2">
+        <div class="about-block">
+          <h2>
+            My Favorite Music Videos 🎥
+            <button class="add-btn admin-only" id="addVideoBtn">+</button>
+          </h2>
+          <div class="video-list" id="videoList">
+          </div>
+        </div>
+      </div>
+      <div class="column col-3">
+        <div class="about-block">
+          <h2>
+            My Favorite Albums 🎶
+            <button class="add-btn admin-only" id="addAlbumBtn">+</button>
+          </h2>
+          <div class="album-list" id="albumList">
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="videoModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeVideoModal">&times;</span>
+        <h2>Add a YouTube Video 📍</h2>
+        <form id="videoForm">
+          <label for="youtubeLink">YouTube URL:</label>
+          <input type="url" id="youtubeLink" required>
+          <button type="submit">Add Video</button>
+        </form>
+      </div>
+    </div>
+    <div id="albumModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeAlbumModal">&times;</span>
+        <h2>Add an Album 🎵</h2>
+        <form id="albumForm">
+          <label for="albumLink">Spotify Album URL:</label>
+          <input type="url" id="albumLink" required>
+          <button type="submit">Add Album</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer style="text-align: center; padding: 20px; background: var(--white); border-top: 1px solid #ddd;">
+    <p style="font-size: 0.9rem;">&copy; 2025 Miyeon. All rights reserved.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/uploadHome.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+/**
+  📁 File: base.css
+  🧑‍💻 Developed by: Elyoo (NotElyoo)
+  🌐 Website: https://miyeon.fr
+  📬 Contact: contact@miyeon.fr
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #007BFF;
+  --primary-dark: #0056b3;
+  --success-color: #28a745;
+  --success-dark: #218838;
+  --background: #f0f2f5;
+  --text-color: #272726;
+  --white: #fff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+  background-color: var(--background);
+  color: var(--text-color);
+  padding-top: 70px;
+}

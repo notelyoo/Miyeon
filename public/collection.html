@@ -1,0 +1,161 @@
+<!-------------------------------------------------------
+  📁 File: collection.html
+  🧑‍💻 Developed by: Elyoo (NotElyoo)
+  🌐 Website: https://miyeon.fr
+  📬 Contact: contact@miyeon.fr
+  ------------------------------------------------------->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Miyeon - Collection</title>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/collection.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/collection">Collection</a></li>
+      </ul>
+      <div class="admin-login">
+        <button id="logoutBtn">Logout</button>
+      </div>      
+    </nav>
+  </header>
+  <main>
+    <div class="sidebar-toggle" id="sidebar‑toggle">☰ Filters</div>
+    <h1>Collect Book 📋</h1>
+    <p class="subtitle">My small collection of photocards. 🎀</p>
+    <div class="sort-dropdown">
+      <label for="sortSelect">Sort by Idol:</label>
+      <select id="sortSelect">
+        <option value="default" selected>Default</option>
+        <option value="asc">A to Z</option>
+        <option value="desc">Z to A</option>
+      </select>
+    </div>
+    <div class="collection-container">
+      <aside id="sidebar">
+        <div class="search-section">
+          <input type="text" id="searchBar" placeholder="Search by idol name">
+          <button id="showAllBtn">Show All</button>
+        </div>
+        <h2>Filters</h2>
+        <div class="filter-options">
+          <button class="filter-option" data-filter="preorder">Pre-Order</button>
+          <button class="filter-option" data-filter="exclusive">Exclusive</button>
+          <button class="filter-option" data-filter="note">Note</button>
+        </div>
+        <h3>Groups</h3>
+        <ul id="groupList"></ul>
+        <h3>Idols</h3>
+        <ul id="idolList"></ul>
+      </aside>
+      <section id="gallery"></section>
+    </div>
+  </main>
+  <div id="uploadOverlay">
+    <div id="uploadModal">
+      <button id="closeUploadModal">✕</button>
+      <h2>Upload a New Item</h2>
+      <form id="overlayUploadForm" enctype="multipart/form-data">
+        <div id="overlayContent">
+          <div id="overlayLeft">
+            <label for="overlayFile">Select image: *</label>
+            <input type="file" id="overlayFile" name="image" accept="image/*" required>
+            <div class="spacer"></div>
+            <label for="overlayIdolName">Idol Name: *</label>
+            <input type="text" id="overlayIdolName" name="idol" required>
+            <div class="spacer"></div>
+            <label for="overlayGroupName">Group Name: *</label>
+            <input type="text" id="overlayGroupName" name="group" required>
+            <div class="spacer"></div>
+            <label for="overlayAlbumName">Album Name:</label>
+            <input type="text" id="overlayAlbumName" name="album">
+            <div class="spacer"></div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="overlayPreorder" name="preorder" value="true">
+              <label for="overlayPreorder">Pre-Order</label>
+            </div>
+            <div class="spacer"></div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="overlayExclusive" name="exclusive" value="true">
+              <label for="overlayExclusive">Exclusive</label>
+            </div>
+            <div class="spacer"></div>
+            <label for="overlayQuantity">Card Quantity: *</label>
+            <select id="overlayQuantity" name="quantity" required>
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <div class="spacer"></div>
+            <label for="overlayNote">Note:</label>
+            <input type="text" id="overlayNote" name="note">
+            <div class="spacer"></div>
+            <button type="submit" class="upload-submit-btn">Upload</button>
+          </div>
+          <div id="overlayRight">
+            <div id="previewContainer">
+              <img id="uploadPreview" src="#" alt="Preview">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="editOverlay">
+    <div id="editModal">
+      <button id="closeEditModal">✕</button>
+      <h2>Edit Card</h2>
+      <form id="editForm">
+        <input type="hidden" id="editItemId">
+        <label for="editIdol">Idol Name:</label>
+        <input type="text" id="editIdol" name="idol" required>
+        <label for="editGroup">Group Name:</label>
+        <input type="text" id="editGroup" name="group" required>
+        <label for="editAlbum">Album:</label>
+        <input type="text" id="editAlbum" name="album">
+        <label><input type="checkbox" id="editPreorder" name="preorder"> Pre-Order</label>
+        <label><input type="checkbox" id="editExclusive" name="exclusive"> Exclusive</label>
+        <label for="editQuantity">Quantity:</label>
+        <input type="number" id="editQuantity" name="quantity" min="1" required>
+        <label for="editNote">Note:</label>
+        <input type="text" id="editNote" name="note">
+        <button type="submit" class="edit-submit-btn">Save</button>
+      </form>
+    </div>
+  </div>
+  <div id="imageModal" class="modal" style="display: none;">
+    <span class="close">&times;</span>
+    <div class="details-container">
+      <div class="details-image">
+        <img id="modalImg" src="#" alt="Image preview">
+      </div>
+      <div class="details-info" id="infoPanel"></div>
+    </div>
+  </div>
+  <div id="uploadConfirmation">
+    <span>Upload successful!</span>
+  </div>
+  <div id="loader" class="loader" style="display:none;">
+    <div class="spinner"></div>
+  </div>
+  <footer style="text-align: center; padding: 20px; background: var(--white); border-top: 1px solid #ddd;">
+    <p style="font-size: 0.9rem;">&copy; 2025 Miyeon. All rights reserved.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/uploadCollection.js"></script>
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+</body>
+</html>

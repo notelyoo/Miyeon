@@ -1,0 +1,194 @@
+/**
+  📁 File: about.css
+  🧑‍💻 Developed by: Elyoo (NotElyoo)
+  🌐 Website: https://miyeon.fr
+  📬 Contact: contact@miyeon.fr
+ */
+
+#uploadBtn {
+  display: none;
+}
+
+#exportBtn {
+  display: none;
+}
+
+.podium-block {
+    overflow: hidden;
+    height: 357px;
+    cursor: pointer;
+  }
+  
+  .podium-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 20px;
+    margin-top: 70px;
+  }
+  
+  .podium-column {
+    position: relative;
+    width: 110px;
+    animation: rise 1s ease-out forwards;
+  }
+  
+  .podium-column.column-1 {
+    height: 174px;
+    background: #AEDFF7;
+  }
+  
+  .podium-column.column-2 {
+    height: 147px;
+    background: #F7C6D7;
+  }
+  
+  .podium-column.column-3 {
+    height: 133px;
+    background: #DFF7AE;
+  }
+  
+  .podium-column:hover {
+    transform: scale(1.05);
+  }
+  
+  @keyframes rise {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .podium-image {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--primary-color);
+    background: var(--white);
+  }
+  
+  .podium-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .podium-label {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    background: rgba(255,255,255,0.7);
+    padding: 4px 0;
+    border-top: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  .podium-medal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+  }
+  
+.profile-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+}
+
+.profile-photo {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  flex: 1;
+  min-width: 200px;
+}
+
+.profile-name {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 700;
+}
+
+.profile-info {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+}
+  
+  .modal {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    display: none;
+  }  
+
+  .modal-content {
+    background-color: var(--white);
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.4s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }  
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal .close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal .close:hover {
+  color: var(--primary-color);
+}
+
+.ranking-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.ranking-list li {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
