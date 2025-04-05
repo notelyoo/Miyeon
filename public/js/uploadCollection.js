@@ -299,13 +299,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (imageModal && e.target === imageModal) imageModal.style.display = 'none';
   });
 
-function updateCardCount() {
-  const gallery = document.getElementById('gallery');
-  if (gallery) {
+  function updateCardCount() {
+    const gallery = document.getElementById('gallery');
+    if (!gallery) return;
+  
     const subtitle = document.querySelector('.subtitle');
-    if (subtitle) subtitle.textContent = `My small collection of ${items.length} photocards. 🎀`;
-  }
-}
+    if (!subtitle) return;
+  
+    const total = items.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
+    subtitle.textContent = `My small collection of ${total} photocards. 🎀`;
+  }  
 
 function sortItems(data) {
   if (sortOrder === 'default') return data;
