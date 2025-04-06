@@ -62,7 +62,7 @@
               removeItemFromGallery(item.id);
               updateCardCount(getItems());
               updateFilters();
-              showToast('Card deleted!');
+              showToast('delete', 'Card deleted!');
             } else {
               console.error('Failed to delete item');
             }

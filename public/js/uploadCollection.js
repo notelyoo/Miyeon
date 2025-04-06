@@ -22,7 +22,6 @@
   import { setupUploadModal, handleUploadForm } from './modules/upload.js';
   
   let items = [], visibleItems = [];
-  const BATCH_SIZE = 30;
   let isAdmin = false;
   
   export function sanitizeInput(str) {
@@ -126,12 +125,7 @@
           if (res.ok) {
             await fetchItemsAndRender();
             closeEditModal();
-            const toast = document.getElementById('uploadConfirmation');
-            if (toast && isAdmin) {
-              toast.querySelector('span').textContent = 'Card updated!';
-              toast.classList.add('show');
-              setTimeout(() => toast.classList.remove('show'), 3000);
-            }
+            showToast('edit', 'Card updated!');
           } else {
             console.error('Failed to update item');
           }
@@ -141,12 +135,14 @@
       });
     }
   
-    const toast = document.getElementById('uploadConfirmation');
-    if (toast && !isAdmin) {
-      toast.remove();
-    } else if (toast) {
-      toast.classList.remove('show');
-      toast.style.display = 'none';
+    if (isAdmin) {
+      const toastIds = ['uploadConfirmation', 'editConfirmation', 'deleteConfirmation'];
+      toastIds.forEach(id => {
+        const toast = document.getElementById(id);
+        if (toast && !toast.classList.contains('show')) {
+          toast.style.display = 'none';
+        }
+      });
     }
   });
   
@@ -182,4 +178,22 @@
         preventNextCardClick = false;
       }
     }, true);
-  }  
+  }
+  
+  function showToast(type, message) {
+    const toastMap = {
+      upload: 'uploadConfirmation',
+      edit: 'editConfirmation',
+      delete: 'deleteConfirmation'
+    };
+    const id = toastMap[type];
+    const toast = document.getElementById(id);
+    if (toast) {
+      toast.style.display = 'block';
+      toast.querySelector('span').textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+  }
+  
+  window.showToast = showToast;  

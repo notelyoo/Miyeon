@@ -94,10 +94,22 @@
     });
   }
   
-  export function showToast(message) {
-    const toast = document.getElementById('uploadConfirmation');
+  export function showToast(type = 'upload', message = '') {
+    const idMap = {
+      upload: 'uploadConfirmation',
+      edit: 'editConfirmation',
+      delete: 'deleteConfirmation'
+    };
+  
+    const toastId = idMap[type];
+    const toast = document.getElementById(toastId);
     if (!toast) return;
-    toast.innerHTML = `<span>${message}</span>`;
+  
+    toast.querySelector('span').textContent = message || toast.querySelector('span').textContent;
+    toast.style.display = 'block';
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
+  
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
   }  

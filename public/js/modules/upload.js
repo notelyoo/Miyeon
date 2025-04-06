@@ -60,6 +60,7 @@
           headers: { 'X-CSRF-Token': csrfToken },
           body: formData
         });
+  
         const newItem = await res.json();
   
         newItem.groupName = sanitizeInput(newItem.group || group);
@@ -73,10 +74,8 @@
         if (preview) preview.style.display = 'none';
         closeUploadModal();
   
-        const confirmation = document.getElementById('uploadConfirmation');
-        if (confirmation) {
-          confirmation.classList.add('show');
-          setTimeout(() => confirmation.classList.remove('show'), 3000);
+        if (window.showToast) {
+          window.showToast('upload', 'Card uploaded!');
         }
       } catch (err) {
         console.error('Upload failed:', err);
