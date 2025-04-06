@@ -54,11 +54,18 @@ miyeon/
 │   │   └── responsive.css       → Media queries and responsive behavior
 │   ├── images/                  → All static images (profile, banners, photocard assets)
 │   ├── js/                      → Frontend JavaScript logic and UI interactivity
-│   │   ├── filter.js            → Photocard filters by idol, group, type, etc.
+│   │   ├── modules/             → Modularized gallery scripts
+│   │   │   ├── admin.js         → Admin login status, CSRF tokens, session management
+│   │   │   ├── counter.js       → Real-time photocard counter update
+│   │   │   ├── filters.js       → Filter logic (group, idol, preorder, note, etc.)
+│   │   │   ├── gallery.js       → Full gallery rendering and delete logic
+│   │   │   ├── modal.js         → All modals (upload, edit, image) and toasts
+│   │   │   ├── sidebar.js       → Group/idol sidebar with filter interactions
+│   │   │   └── upload.js        → Upload modal behavior and live gallery insert
 │   │   ├── login.js             → Handles login form and localStorage admin flag
-│   │   ├── main.js              → Shared site behavior (modals, admin UI logic)
-│   │   ├── search.js            → Text-based search and card highlighting
-│   │   ├── uploadCollection.js  → Upload modal behavior and data validation (collection)
+│   │   ├── main.js              → Global UI logic across all pages
+│   │   ├── search.js            → Text-based search and highlight system
+│   │   ├── uploadCollection.js  → Collection logic: fetch, update, filter, modals
 │   │   └── uploadHome.js        → Embed modal handling for YouTube and Spotify (home)
 │   └── uploads/                 → Folder where uploaded photocard images are stored
 ├── database.db                  → SQLite database file that stores all collection data
