@@ -317,7 +317,6 @@ body.sidebar-open {
 }
 
 .details-image {
-  width: 350px;
   height: 539px;
   padding: 20px;
   background: var(--white);
@@ -331,8 +330,7 @@ body.sidebar-open {
 }
 
 .details-info {
-  width: calc(100% - 454px);
-  padding: 10px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -354,7 +352,7 @@ body.sidebar-open {
 
 .modal-details p strong {
   display: inline-block;
-  width: 150px;
+  width: 140px;
   color: var(--primary-color);
 }
 
