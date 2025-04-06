@@ -5,12 +5,6 @@
   📬 Contact: contact@miyeon.fr
  */
 
-  function sanitizeInput(str) {
-    const temp = document.createElement('div');
-    temp.textContent = str;
-    return temp.innerHTML;
-  }
-  
   document.addEventListener('DOMContentLoaded', async () => {
     const adminLoginDiv = document.querySelector('.admin-login');
     const isAdmin = await checkAdminStatus();

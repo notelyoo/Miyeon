@@ -5,20 +5,14 @@
   📬 Contact: contact@miyeon.fr
  */
 
-function sanitizeInput(str) {
-  const temp = document.createElement('div');
-  temp.textContent = str;
-  return temp.innerHTML;
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('loginForm');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const username = sanitizeInput(document.getElementById('username').value.trim());
-    const password = sanitizeInput(document.getElementById('password').value.trim());
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     try {
       const csrfToken = await getCsrfToken();

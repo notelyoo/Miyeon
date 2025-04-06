@@ -24,12 +24,6 @@
   let items = [], visibleItems = [];
   let isAdmin = false;
   
-  export function sanitizeInput(str) {
-    const temp = document.createElement('div');
-    temp.textContent = str;
-    return temp.innerHTML;
-  }
-  
   export function getItems() {
     return items;
   }
@@ -102,14 +96,14 @@
         e.preventDefault();
         const id = document.getElementById('editItemId').value;
         const updated = {
-          idol: sanitizeInput(document.getElementById('editIdol').value),
-          group: sanitizeInput(document.getElementById('editGroup').value),
-          album: sanitizeInput(document.getElementById('editAlbum').value),
+          idol: document.getElementById('editIdol').value.trim(),
+          group: document.getElementById('editGroup').value.trim(),
+          album: document.getElementById('editAlbum').value.trim(),
           preorder: document.getElementById('editPreorder').checked ? 'true' : 'false',
           exclusive: document.getElementById('editExclusive').checked ? 'true' : 'false',
           quantity: document.getElementById('editQuantity').value,
-          note: sanitizeInput(document.getElementById('editNote').value)
-        };
+          note: document.getElementById('editNote').value.trim()
+        };        
   
         try {
           const csrfToken = await getCsrfToken();
@@ -144,6 +138,11 @@
         }
       });
     }
+
+    const closeBtn = document.getElementById('closeEditModal');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeEditModal);
+    }  
   });
   
   function setupSidebarToggle() {

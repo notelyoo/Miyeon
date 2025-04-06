@@ -5,12 +5,6 @@
   📬 Contact: contact@miyeon.fr
  */
 
-function sanitizeInput(str) {
-  const temp = document.createElement('div');
-  temp.textContent = str;
-  return temp.innerHTML;
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   const isAdmin = await checkAdminStatus();
 
@@ -102,7 +96,7 @@ if (videoForm) {
     albumForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const albumLinkInput = document.getElementById('albumLink');
-      const url = sanitizeInput(albumLinkInput.value.trim());
+      const url = albumLinkInput.value.trim();
       if (!url) return;
       let albumId = '';
       const spotifyMatch = url.match(/spotify\.com\/album\/([a-zA-Z0-9]+)/);
@@ -116,7 +110,7 @@ if (videoForm) {
             'Content-Type': 'application/json',
             'X-CSRF-Token': csrfToken
           },
-          body: JSON.stringify({ embedUrl: sanitizeInput(embedUrl) })
+          body: JSON.stringify({ embedUrl })
         })
           .then(response => response.json())
           .then(() => fetchAlbums())

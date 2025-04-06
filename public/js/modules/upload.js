@@ -7,7 +7,7 @@
 
   import { closeUploadModal } from './modal.js';
   import { getCsrfToken } from './admin.js';
-  import { sanitizeInput, addItemToGallery } from '../uploadCollection.js';
+  import { addItemToGallery } from '../uploadCollection.js';
   
   export function setupUploadModal() {
     const fileInput = document.getElementById('overlayFile');
