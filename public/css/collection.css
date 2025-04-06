@@ -84,6 +84,30 @@ body.sidebar-open {
   overflow: hidden;
 }
 
+.global-drop-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 20%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.global-drop-overlay.active {
+  display: block;
+  opacity: 1;
+  animation: fadeZoom 0.3s ease-out;
+}
+
 #uploadOverlay {
   display: none;
   position: fixed;

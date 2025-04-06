@@ -12,6 +12,37 @@
   export function setupUploadModal() {
     const fileInput = document.getElementById('overlayFile');
     const preview = document.getElementById('uploadPreview');
+    const overlay = document.getElementById('uploadOverlay');
+  
+    if (overlay) {
+      overlay.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        overlay.classList.add('dragover');
+      });
+  
+      overlay.addEventListener('dragleave', () => {
+        overlay.classList.remove('dragover');
+      });
+  
+      overlay.addEventListener('drop', (e) => {
+        e.preventDefault();
+        overlay.classList.remove('dragover');
+  
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+          fileInput.files = e.dataTransfer.files;
+  
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            if (preview) {
+              preview.src = ev.target.result;
+              preview.style.display = 'block';
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
   
     fileInput?.addEventListener('change', (e) => {
       const file = e.target.files[0];
@@ -26,7 +57,6 @@
     });
   
     window.addEventListener('open-upload-modal', () => {
-      const overlay = document.getElementById('uploadOverlay');
       if (overlay) overlay.style.display = 'flex';
     });
   
@@ -42,12 +72,12 @@
       e.preventDefault();
   
       const formData = new FormData(form);
-      const group = sanitizeInput(document.getElementById('overlayGroupName').value);
-      const idol = sanitizeInput(document.getElementById('overlayIdolName').value);
+      const group = document.getElementById('overlayGroupName').value.trim();
+      const idol = document.getElementById('overlayIdolName').value.trim();
   
       formData.set('group', group);
       formData.set('idol', idol);
-      formData.set('album', sanitizeInput(document.getElementById('overlayAlbumName').value));
+      formData.set('album', document.getElementById('overlayAlbumName').value.trim());
       formData.set('note', document.getElementById('overlayNote').value);
       formData.set('quantity', document.getElementById('overlayQuantity').value);
       formData.set('preorder', document.getElementById('overlayPreorder').checked ? 'true' : 'false');
@@ -63,8 +93,8 @@
   
         const newItem = await res.json();
   
-        newItem.groupName = sanitizeInput(newItem.group || group);
-        newItem.idolName = sanitizeInput(newItem.idol || idol);
+        newItem.groupName = newItem.group || group;
+        newItem.idolName = newItem.idol || idol;
         newItem.group = newItem.group || newItem.groupName;
         newItem.idol = newItem.idol || newItem.idolName;
   

@@ -37,6 +37,7 @@
     if (gallery) gallery.innerHTML = '';
   
     renderFullGallery(visibleItems, isAdmin);
+    updateCardCount(visibleItems, items);
   }
   
   async function fetchItemsAndRender() {
@@ -90,6 +91,52 @@
     setupModalOverlayClose();
     setupSidebarToggle();
   
+    if (isAdmin) {
+      const overlay = document.getElementById('globalDropOverlay');
+      const fileInput = document.getElementById('overlayFile');
+      const preview = document.getElementById('uploadPreview');
+      const uploadOverlay = document.getElementById('uploadOverlay');
+  
+      if (overlay && fileInput && preview && uploadOverlay) {
+        window.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          const uploadOverlay = document.getElementById('uploadOverlay');
+          const isOpen = uploadOverlay?.style.display === 'flex';
+          if (isOpen) {
+            overlay.classList.add('active');
+          }
+        });        
+  
+        window.addEventListener('dragleave', (e) => {
+          if (e.relatedTarget === null || e.relatedTarget === document.body) {
+            overlay.classList.remove('active');
+          }
+        });
+  
+        window.addEventListener('drop', (e) => {
+          e.preventDefault();
+          overlay.classList.remove('active');
+  
+          const isUploadModalOpen = uploadOverlay.style.display === 'flex';
+          if (!isUploadModalOpen) return;
+  
+          const file = e.dataTransfer.files[0];
+          if (file && file.type.startsWith('image/')) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            fileInput.files = dataTransfer.files;
+  
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              preview.src = ev.target.result;
+              preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+    }
+  
     const editForm = document.getElementById('editForm');
     if (editForm) {
       editForm.addEventListener('submit', async (e) => {
@@ -103,7 +150,7 @@
           exclusive: document.getElementById('editExclusive').checked ? 'true' : 'false',
           quantity: document.getElementById('editQuantity').value,
           note: document.getElementById('editNote').value.trim()
-        };        
+        };
   
         try {
           const csrfToken = await getCsrfToken();
@@ -138,11 +185,11 @@
         }
       });
     }
-
+  
     const closeBtn = document.getElementById('closeEditModal');
     if (closeBtn) {
       closeBtn.addEventListener('click', closeEditModal);
-    }  
+    }
   });
   
   function setupSidebarToggle() {

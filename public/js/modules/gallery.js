@@ -22,6 +22,10 @@
       div.classList.add('gallery-item', 'fade-in');
       div.dataset.group = item.groupName;
       div.dataset.idol = item.idolName;
+
+      if (isAdmin) {
+        div.addEventListener('dblclick', () => openEditModal(item));
+      }
   
       const cardImage = document.createElement('div');
       cardImage.classList.add('card-image');

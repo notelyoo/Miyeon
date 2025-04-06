@@ -39,7 +39,18 @@
   
   export function closeUploadModal() {
     const overlay = document.getElementById('uploadOverlay');
-    if (overlay) overlay.style.display = 'none';
+    if (!overlay) return;
+  
+    overlay.style.display = 'none';
+  
+    const form = document.getElementById('overlayUploadForm');
+    if (form) form.reset();
+  
+    const preview = document.getElementById('uploadPreview');
+    if (preview) {
+      preview.src = '#';
+      preview.style.display = 'none';
+    }
   }
   
   export function openImageModal(item) {
@@ -88,9 +99,9 @@
       const editOverlay = document.getElementById('editOverlay');
       const imageModal = document.getElementById('imageModal');
   
-      if (uploadOverlay && e.target === uploadOverlay) uploadOverlay.style.display = 'none';
-      if (editOverlay && e.target === editOverlay) editOverlay.style.display = 'none';
-      if (imageModal && e.target === imageModal) imageModal.style.display = 'none';
+      if (uploadOverlay && e.target === uploadOverlay) closeUploadModal();
+      if (editOverlay && e.target === editOverlay) closeEditModal();
+      if (imageModal && e.target === imageModal) closeImageModal();
     });
   }
   

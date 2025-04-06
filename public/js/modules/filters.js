@@ -48,12 +48,15 @@
   
   export function sortItems(data) {
     if (sortOrder === 'default') return data;
+    if (sortOrder === 'qty') {
+      return data.sort((a, b) => (parseInt(b.quantity) || 1) - (parseInt(a.quantity) || 1));
+    }    
     return data.sort((a, b) =>
       sortOrder === 'asc'
         ? a.idol.localeCompare(b.idol)
         : b.idol.localeCompare(a.idol)
     );
-  }
+  }  
   
   export function resetFilters() {
     selectedGroup = null;
@@ -110,4 +113,4 @@
         updateFilters();
       });
     }
-  }  
+  }   
