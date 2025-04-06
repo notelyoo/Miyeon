@@ -30,10 +30,10 @@
     temp.textContent = str;
     return temp.innerHTML;
   }
-
+  
   export function getItems() {
     return items;
-  }  
+  }
   
   export function updateFilters() {
     generateSidebar(items, updateFilters);
@@ -95,6 +95,7 @@
     setupSearchAndSort(updateFilters);
     await fetchItemsAndRender();
     setupModalOverlayClose();
+    setupSidebarToggle();
   
     const editForm = document.getElementById('editForm');
     if (editForm) {
@@ -126,7 +127,7 @@
             await fetchItemsAndRender();
             closeEditModal();
             const toast = document.getElementById('uploadConfirmation');
-            if (toast) {
+            if (toast && isAdmin) {
               toast.querySelector('span').textContent = 'Card updated!';
               toast.classList.add('show');
               setTimeout(() => toast.classList.remove('show'), 3000);
@@ -139,4 +140,46 @@
         }
       });
     }
-  });  
+  
+    const toast = document.getElementById('uploadConfirmation');
+    if (toast && !isAdmin) {
+      toast.remove();
+    } else if (toast) {
+      toast.classList.remove('show');
+      toast.style.display = 'none';
+    }
+  });
+  
+  function setupSidebarToggle() {
+    const sidebarToggle = document.getElementById('sidebar‑toggle');
+    const sidebar = document.getElementById('sidebar');
+    const collectionContainer = document.querySelector('.collection-container');
+  
+    if (!sidebarToggle || !sidebar || !collectionContainer) return;
+  
+    sidebarToggle.addEventListener('click', () => {
+      const isActive = sidebar.classList.toggle('active');
+      collectionContainer.classList.toggle('sidebar-open', isActive);
+    });
+  
+    let preventNextCardClick = false;
+  
+    document.addEventListener('click', (e) => {
+      const clickedInsideSidebar = sidebar.contains(e.target);
+      const clickedToggle = e.target === sidebarToggle;
+  
+      if (sidebar.classList.contains('active') && !clickedInsideSidebar && !clickedToggle) {
+        sidebar.classList.remove('active');
+        collectionContainer.classList.remove('sidebar-open');
+        preventNextCardClick = true;
+      }
+    });
+  
+    document.querySelector('#gallery')?.addEventListener('click', (e) => {
+      if (preventNextCardClick) {
+        e.stopPropagation();
+        e.preventDefault();
+        preventNextCardClick = false;
+      }
+    }, true);
+  }  

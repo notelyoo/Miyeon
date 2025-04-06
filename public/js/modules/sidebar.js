@@ -32,10 +32,11 @@
       const btn = document.createElement('button');
       btn.textContent = group;
       if (selectedGroup === group) btn.classList.add('selected');
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         setSelectedGroup(selectedGroup === group ? null : group);
         updateFilters();
-      });
+      });      
       li.appendChild(btn);
       groupList.appendChild(li);
     });
@@ -45,7 +46,8 @@
       const btn = document.createElement('button');
       btn.textContent = idol;
       if (selectedIdols.includes(idol)) btn.classList.add('selected');
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         toggleIdol(idol);
         updateFilters();
       });

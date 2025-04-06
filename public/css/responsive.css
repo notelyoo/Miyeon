@@ -220,9 +220,9 @@
 
   #sidebar {
     position: fixed;
-    top: 10%;
+    top: 9%;
     left: -260px;
-    height: 100%;
+    height: 90%;
     width: 260px;
     background: var(--white);
     padding: 20px;
