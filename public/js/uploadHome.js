@@ -1,14 +1,7 @@
-/**
-  📁 File: uploadHome.js
-  🧑‍💻 Developed by: Elyoo (NotElyoo)
-  🌐 Website: https://miyeon.fr
-  📬 Contact: contact@miyeon.fr
- */
-
 document.addEventListener('DOMContentLoaded', async () => {
   const isAdmin = await checkAdminStatus();
-
   const adminLoginDiv = document.querySelector('.admin-login');
+
   if (isAdmin) {
     adminLoginDiv.innerHTML = `
       <span class="admin-badge">👑 Admin Mode</span>
@@ -24,117 +17,95 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       window.location.reload();
     });
-    document.querySelectorAll('.admin-only').forEach(el => {
-      el.style.display = 'inline-block';
-    });
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
   } else {
     adminLoginDiv.innerHTML = `<a href="/login">Login</a>`;
-    document.querySelectorAll('.admin-only').forEach(el => {
-      el.style.display = 'none';
-    });
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
   }
 
   fetchVideos();
+  fetchAlbums();
 
   const addVideoBtn = document.getElementById('addVideoBtn');
   const videoModal = document.getElementById('videoModal');
   const closeVideoModal = document.getElementById('closeVideoModal');
 
-  if (addVideoBtn && videoModal) {
-    addVideoBtn.onclick = () => videoModal.style.display = 'block';
-  }
-  if (closeVideoModal && videoModal) {
-    closeVideoModal.onclick = () => videoModal.style.display = 'none';
-  }
+  if (addVideoBtn && videoModal) addVideoBtn.onclick = () => videoModal.style.display = 'block';
+  if (closeVideoModal && videoModal) closeVideoModal.onclick = () => videoModal.style.display = 'none';
+
   window.addEventListener('click', (event) => {
-    if (videoModal && event.target === videoModal) {
-      videoModal.style.display = 'none';
-    }
+    if (event.target === videoModal) videoModal.style.display = 'none';
+    if (event.target === albumModal) albumModal.style.display = 'none';
   });
 
   const videoForm = document.getElementById('videoForm');
-if (videoForm) {
-  videoForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const youtubeLinkInput = document.getElementById('youtubeLink');
-    const rawUrl = youtubeLinkInput.value.trim();
-    if (!rawUrl) return;
-
-    const cleanUrl = rawUrl.split('?')[0];
-    let videoId = '';
-    const shortUrlMatch = cleanUrl.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
-    const longUrlMatch = cleanUrl.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
-    const embedUrlMatch = cleanUrl.match(/embed\/([a-zA-Z0-9_-]{11})/);
-
-    if (shortUrlMatch) videoId = shortUrlMatch[1];
-    else if (longUrlMatch) videoId = longUrlMatch[1];
-    else if (embedUrlMatch) videoId = embedUrlMatch[1];
-
-    if (videoId) {
-      const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?controls=0`;
-      const csrfToken = await getCsrfToken();
-      fetch('/api/videos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken
-        },
-        body: JSON.stringify({ embedUrl })
-      })
-        .then(response => response.json())
-        .then(() => fetchVideos())
-        .catch(err => console.error('Error saving video:', err));
-    }
-
-    youtubeLinkInput.value = "";
-    if (videoModal) videoModal.style.display = 'none';
-  });
-}
-
-  const albumForm = document.getElementById('albumForm');
-  if (albumForm) {
-    albumForm.addEventListener('submit', async (e) => {
+  if (videoForm) {
+    videoForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const albumLinkInput = document.getElementById('albumLink');
-      const url = albumLinkInput.value.trim();
-      if (!url) return;
-      let albumId = '';
-      const spotifyMatch = url.match(/spotify\.com\/album\/([a-zA-Z0-9]+)/);
-      if (spotifyMatch) albumId = spotifyMatch[1];
-      if (albumId) {
-        const embedUrl = `https://open.spotify.com/embed/album/${albumId}`;
+      const youtubeLinkInput = document.getElementById('youtubeLink');
+      const rawUrl = youtubeLinkInput.value.trim();
+      if (!rawUrl) return;
+
+      const cleanUrl = rawUrl.split('?')[0];
+      let videoId = '';
+      const shortUrlMatch = cleanUrl.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+      const longUrlMatch = cleanUrl.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+      const embedUrlMatch = cleanUrl.match(/embed\/([a-zA-Z0-9_-]{11})/);
+
+      if (shortUrlMatch) videoId = shortUrlMatch[1];
+      else if (longUrlMatch) videoId = longUrlMatch[1];
+      else if (embedUrlMatch) videoId = embedUrlMatch[1];
+
+      if (videoId) {
+        const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?controls=0`;
         const csrfToken = await getCsrfToken();
-        fetch('/api/albums', {
+        await fetch('/api/videos', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-Token': csrfToken
           },
           body: JSON.stringify({ embedUrl })
-        })
-          .then(response => response.json())
-          .then(() => fetchAlbums())
-          .catch(err => console.error('Error saving album:', err));
+        });
+        fetchVideos();
       }
+
+      youtubeLinkInput.value = "";
+      if (videoModal) videoModal.style.display = 'none';
+    });
+  }
+
+  const albumForm = document.getElementById('albumForm');
+  const addAlbumBtn = document.getElementById('addAlbumBtn');
+  const albumModal = document.getElementById('albumModal');
+  const closeAlbumModal = document.getElementById('closeAlbumModal');
+
+  if (albumForm) {
+    albumForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const albumLinkInput = document.getElementById('albumLink');
+      const url = albumLinkInput.value.trim();
+      const match = url.match(/spotify\.com\/album\/([a-zA-Z0-9]+)/);
+      if (!match) return;
+      const albumId = match[1];
+      const embedUrl = `https://open.spotify.com/embed/album/${albumId}`;
+      const csrfToken = await getCsrfToken();
+      await fetch('/api/albums', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ embedUrl })
+      });
+      fetchAlbums();
       albumLinkInput.value = "";
       if (albumModal) albumModal.style.display = 'none';
     });
   }
 
-  const addAlbumBtn = document.getElementById('addAlbumBtn');
-  const albumModal = document.getElementById('albumModal');
-  const closeAlbumModal = document.getElementById('closeAlbumModal');
-  if (addAlbumBtn && albumModal) {
-    addAlbumBtn.onclick = () => albumModal.style.display = 'block';
-  }
-  if (closeAlbumModal && albumModal) {
-    closeAlbumModal.onclick = () => albumModal.style.display = 'none';
-  }
-  window.onclick = (event) => {
-    if (albumModal && event.target === albumModal) {
-      albumModal.style.display = 'none';
-    }
-  };
+  if (addAlbumBtn && albumModal) addAlbumBtn.onclick = () => albumModal.style.display = 'block';
+  if (closeAlbumModal && albumModal) closeAlbumModal.onclick = () => albumModal.style.display = 'none';
 
   function fetchAlbums() {
     const albumList = document.getElementById('albumList');
@@ -146,10 +117,9 @@ if (videoForm) {
         albums.forEach(album => {
           addAlbumToList(album);
         });
+        document.querySelectorAll('.album-placeholder').forEach(el => albumObserver.observe(el));
       })
-      .catch(err => {
-        console.error('Error fetching albums:', err);
-      });
+      .catch(err => console.error('Error fetching albums:', err));
   }
 
   function addAlbumToList(album) {
@@ -158,46 +128,54 @@ if (videoForm) {
 
     const albumItem = document.createElement('div');
     albumItem.classList.add('album-item');
-    albumItem.style.position = "relative";
-    albumItem.style.overflow = "visible";
+    albumItem.style.position = 'relative';
+    albumItem.style.overflow = 'hidden';
+    albumItem.style.height = '152px';
+    albumItem.style.marginBottom = '12px';
+    albumItem.style.borderRadius = '12px';
 
-    const iframe = document.createElement('iframe');
-    iframe.style.borderRadius = "12px";
-    iframe.src = album.embedUrl;
-    iframe.width = "100%";
-    iframe.height = "152";
-    iframe.frameBorder = "0";
-    iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-    iframe.loading = "lazy";
-    iframe.allowFullscreen = true;
-    iframe.style.zIndex = "0";
+    const placeholder = document.createElement('div');
+    placeholder.classList.add('album-placeholder');
+    placeholder.dataset.embed = album.embedUrl;
+    placeholder.style.width = '100%';
+    placeholder.style.height = '100%';
+    placeholder.style.backgroundColor = '#111';
+    placeholder.style.display = 'flex';
+    placeholder.style.alignItems = 'center';
+    placeholder.style.justifyContent = 'center';
+    placeholder.style.color = '#fff';
+    placeholder.style.fontSize = '14px';
+    placeholder.style.borderRadius = '12px';
+    placeholder.style.fontFamily = 'sans-serif';
+    placeholder.textContent = 'Loading album…';
 
-    albumItem.appendChild(iframe);
+    albumItem.appendChild(placeholder);
 
     if (isAdmin) {
       const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = "×";
-      deleteBtn.classList.add("delete-embed-btn");
-      deleteBtn.style.position = "absolute";
-      deleteBtn.style.top = "8px";
-      deleteBtn.style.right = "8px";
-      deleteBtn.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
-      deleteBtn.style.border = "none";
-      deleteBtn.style.color = "white";
-      deleteBtn.style.borderRadius = "50%";
-      deleteBtn.style.width = "24px";
-      deleteBtn.style.height = "24px";
-      deleteBtn.style.cursor = "pointer";
-      deleteBtn.style.zIndex = "200";
+      deleteBtn.textContent = '×';
+      deleteBtn.classList.add('delete-embed-btn');
+      Object.assign(deleteBtn.style, {
+        position: 'absolute',
+        top: '8px',
+        right: '8px',
+        backgroundColor: 'rgba(255, 0, 0, 0.8)',
+        border: 'none',
+        color: 'white',
+        borderRadius: '50%',
+        width: '24px',
+        height: '24px',
+        cursor: 'pointer',
+        zIndex: '200'
+      });
       deleteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const csrfToken = await getCsrfToken();
-        fetch(`/api/albums/${album.id}`, {
+        await fetch(`/api/albums/${album.id}`, {
           method: 'DELETE',
           headers: { 'X-CSRF-Token': csrfToken }
-        })
-          .then(res => res.ok && fetchAlbums())
-          .catch(err => console.error("Erreur lors de la suppression de l'album:", err));
+        });
+        fetchAlbums();
       });
       albumItem.appendChild(deleteBtn);
     }
@@ -208,7 +186,7 @@ if (videoForm) {
   function fetchVideos() {
     const videoList = document.getElementById('videoList');
     if (!videoList) return;
-  
+
     fetch('/api/videos?ts=' + Date.now())
       .then(response => response.json())
       .then(videos => {
@@ -216,64 +194,149 @@ if (videoForm) {
         videos.forEach(video => {
           addVideoToList(video);
         });
+        document.querySelectorAll('.video-placeholder').forEach(el => videoObserver.observe(el));
       })
-      .catch(err => {
-        console.error('Error fetching videos:', err);
-      });
+      .catch(err => console.error('Error fetching videos:', err));
   }
-  
+
+  const videoObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const container = entry.target;
+        const embedUrl = container.dataset.embed;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = `${embedUrl}&controls=1&modestbranding=1&rel=0`;
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.loading = 'lazy';
+        iframe.style.opacity = '0';
+        iframe.style.transition = 'opacity 0.5s ease';
+
+        setTimeout(() => {
+          container.innerHTML = '';
+          container.appendChild(iframe);
+          requestAnimationFrame(() => {
+            iframe.style.opacity = '1';
+          });
+          obs.unobserve(container);
+        }, 100);
+      }
+    });
+  }, {
+    rootMargin: '200px 0px',
+    threshold: 0.1
+  });
+
+  const albumObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const container = entry.target;
+        const embedUrl = container.dataset.embed;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = embedUrl;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.borderRadius = '12px';
+        iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        iframe.allowFullscreen = true;
+        iframe.loading = 'lazy';
+        iframe.style.opacity = '0';
+        iframe.style.transition = 'opacity 0.4s ease';
+
+        setTimeout(() => {
+          container.innerHTML = '';
+          container.appendChild(iframe);
+          requestAnimationFrame(() => {
+            iframe.style.opacity = '1';
+          });
+          obs.unobserve(container);
+        }, 100);
+      }
+    });
+  }, {
+    rootMargin: '200px 0px',
+    threshold: 0.1
+  });
+
   function addVideoToList(video) {
     const videoList = document.getElementById('videoList');
     if (!videoList) return;
-  
+
     const videoItem = document.createElement('div');
     videoItem.classList.add('video-item');
     videoItem.style.position = "relative";
-    videoItem.style.overflow = "visible";
-  
-    const iframe = document.createElement('iframe');
-    iframe.src = video.embedUrl;
-    iframe.width = "560";
-    iframe.height = "315";
-    iframe.frameBorder = "0";
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-    iframe.referrerPolicy = "strict-origin-when-cross-origin";
-    iframe.allowFullscreen = true;
-    iframe.loading = "lazy";
-    iframe.title = "YouTube video player";
-  
-    videoItem.appendChild(iframe);
-  
+    videoItem.style.overflow = "hidden";
+    videoItem.style.borderRadius = "12px";
+
+    const placeholder = document.createElement('div');
+    placeholder.classList.add('video-placeholder');
+    placeholder.dataset.embed = video.embedUrl;
+    placeholder.style.width = "100%";
+    placeholder.style.paddingBottom = "56.25%";
+    placeholder.style.position = "relative";
+    placeholder.style.backgroundColor = "#000";
+    placeholder.style.borderRadius = "12px";
+
+    const videoIdMatch = video.embedUrl.match(/embed\/([a-zA-Z0-9_-]{11})/);
+    const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+    if (videoId) {
+      const thumbnail = document.createElement('img');
+      thumbnail.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      thumbnail.alt = "";
+      thumbnail.style.position = "absolute";
+      thumbnail.style.top = "0";
+      thumbnail.style.left = "0";
+      thumbnail.style.width = "100%";
+      thumbnail.style.height = "100%";
+      thumbnail.style.objectFit = "cover";
+      thumbnail.style.borderRadius = "12px";
+      thumbnail.style.zIndex = "0";
+      placeholder.appendChild(thumbnail);
+    }
+
+    videoItem.appendChild(placeholder);
+
     if (isAdmin) {
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = "×";
       deleteBtn.classList.add("delete-embed-btn");
-      deleteBtn.style.position = "absolute";
-      deleteBtn.style.top = "8px";
-      deleteBtn.style.right = "8px";
-      deleteBtn.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
-      deleteBtn.style.border = "none";
-      deleteBtn.style.color = "white";
-      deleteBtn.style.borderRadius = "50%";
-      deleteBtn.style.width = "24px";
-      deleteBtn.style.height = "24px";
-      deleteBtn.style.cursor = "pointer";
-      deleteBtn.style.zIndex = "200";
+      Object.assign(deleteBtn.style, {
+        position: "absolute",
+        top: "8px",
+        right: "8px",
+        backgroundColor: "rgba(255, 0, 0, 0.8)",
+        border: "none",
+        color: "white",
+        borderRadius: "50%",
+        width: "24px",
+        height: "24px",
+        cursor: "pointer",
+        zIndex: "200"
+      });
       deleteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const csrfToken = await getCsrfToken();
-        fetch(`/api/videos/${video.id}`, {
+        await fetch(`/api/videos/${video.id}`, {
           method: 'DELETE',
           headers: { 'X-CSRF-Token': csrfToken }
-        })
-          .then(res => res.ok && fetchVideos())
-          .catch(err => console.error("Erreur lors de la suppression de la vidéo:", err));
+        });
+        fetchVideos();
       });
       videoItem.appendChild(deleteBtn);
     }
-  
+
     videoList.appendChild(videoItem);
-  }  
+  }
 
   fetchAlbums();
 });
