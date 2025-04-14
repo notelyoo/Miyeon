@@ -47,16 +47,16 @@
   });
   
   const globalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 500,
-    message: { error: 'Trop de requêtes. Réessayez plus tard.' }
-  });
+  windowMs: 15 * 60 * 1000,
+  max: 500,
+  message: { error: 'Too many requests. Please try again later.' }
+});
   
   const loginLimiter = rateLimit({
-    windowMs: 10 * 60 * 1000,
-    max: 5,
-    message: { error: 'Trop de tentatives de connexion. Réessayez plus tard.' }
-  });
+  windowMs: 10 * 60 * 1000,
+  max: 5,
+  message: { error: 'Too many login attempts. Please try again later.' }
+});
   
   app.use(globalLimiter);
   
@@ -235,7 +235,7 @@
     if (!embedUrl) return res.status(400).json({ error: 'embedUrl is required' });
     db.run(`INSERT INTO videos (embedUrl) VALUES (?)`, [sanitizeInput(embedUrl)], function (err) {
       if (err) {
-        console.error("❌ Erreur lors de l'insertion vidéo :", err.message);
+        console.error("❌ Error inserting video:", err.message);
         return res.status(500).json({ error: 'Internal server error', details: err.message });
       }
       res.json({ id: this.lastID, embedUrl });
