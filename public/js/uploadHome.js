@@ -3,7 +3,7 @@
   🧑‍💻 Developed by: Elyoo (NotElyoo)
   🌐 Website: https://miyeon.fr
   📬 Contact: contact@miyeon.fr
- */
+*/
 
 document.addEventListener('DOMContentLoaded', async () => {
   const isAdmin = await checkAdminStatus();
@@ -37,16 +37,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   fetchVideos();
   fetchAlbums();
 
+  // 🎬 YouTube
   const addVideoBtn = document.getElementById('addVideoBtn');
   const videoModal = document.getElementById('videoModal');
   const closeVideoModal = document.getElementById('closeVideoModal');
 
-  if (addVideoBtn && videoModal) {
-    addVideoBtn.onclick = () => videoModal.style.display = 'block';
-  }
-  if (closeVideoModal && videoModal) {
-    closeVideoModal.onclick = () => videoModal.style.display = 'none';
-  }
+  if (addVideoBtn && videoModal) addVideoBtn.onclick = () => videoModal.style.display = 'block';
+  if (closeVideoModal && videoModal) closeVideoModal.onclick = () => videoModal.style.display = 'none';
+
   window.addEventListener('click', (event) => {
     if (videoModal && event.target === videoModal) {
       videoModal.style.display = 'none';
@@ -92,6 +90,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // 🎧 Spotify
+  const albumForm = document.getElementById('albumForm');
+  if (albumForm) {
+    albumForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const albumLinkInput = document.getElementById('albumLink');
+      const url = albumLinkInput.value.trim();
+      if (!url) return;
+
+      let albumId = '';
+      const spotifyMatch = url.match(/spotify\.com\/album\/([a-zA-Z0-9]+)/);
+      if (spotifyMatch) albumId = spotifyMatch[1];
+
+      if (albumId) {
+        const embedUrl = `https://open.spotify.com/embed/album/${albumId}`;
+        const csrfToken = await getCsrfToken();
+        fetch('/api/albums', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+          },
+          body: JSON.stringify({ embedUrl })
+        })
+          .then(response => response.json())
+          .then(() => fetchAlbums())
+          .catch(err => console.error('Error saving album:', err));
+      }
+
+      albumLinkInput.value = "";
+      if (albumModal) albumModal.style.display = 'none';
+    });
+  }
+
+  const addAlbumBtn = document.getElementById('addAlbumBtn');
+  const albumModal = document.getElementById('albumModal');
+  const closeAlbumModal = document.getElementById('closeAlbumModal');
+
+  if (addAlbumBtn && albumModal) addAlbumBtn.onclick = () => albumModal.style.display = 'block';
+  if (closeAlbumModal && albumModal) closeAlbumModal.onclick = () => albumModal.style.display = 'none';
+
+  window.onclick = (event) => {
+    if (albumModal && event.target === albumModal) {
+      albumModal.style.display = 'none';
+    }
+  };
+
+  // 🔁 Loaders
   function fetchVideos() {
     const videoList = document.getElementById('videoList');
     if (!videoList) return;
@@ -104,9 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           addVideoToList(video);
         });
       })
-      .catch(err => {
-        console.error('Error fetching videos:', err);
-      });
+      .catch(err => console.error('Error fetching videos:', err));
   }
 
   function addVideoToList(video) {
@@ -151,17 +195,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = "×";
       deleteBtn.classList.add("delete-embed-btn");
-      deleteBtn.style.position = "absolute";
-      deleteBtn.style.top = "8px";
-      deleteBtn.style.right = "8px";
-      deleteBtn.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
-      deleteBtn.style.border = "none";
-      deleteBtn.style.color = "white";
-      deleteBtn.style.borderRadius = "50%";
-      deleteBtn.style.width = "24px";
-      deleteBtn.style.height = "24px";
-      deleteBtn.style.cursor = "pointer";
-      deleteBtn.style.zIndex = "200";
+      Object.assign(deleteBtn.style, {
+        position: "absolute", top: "8px", right: "8px",
+        backgroundColor: "rgba(255, 0, 0, 0.8)", color: "white",
+        border: "none", borderRadius: "50%", width: "24px", height: "24px",
+        cursor: "pointer", zIndex: "200"
+      });
       deleteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const csrfToken = await getCsrfToken();
@@ -181,6 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function fetchAlbums() {
     const albumList = document.getElementById('albumList');
     if (!albumList) return;
+
     fetch('/api/albums?ts=' + Date.now())
       .then(response => response.json())
       .then(albums => {
@@ -189,9 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           addAlbumToList(album);
         });
       })
-      .catch(err => {
-        console.error('Error fetching albums:', err);
-      });
+      .catch(err => console.error('Error fetching albums:', err));
   }
 
   function addAlbumToList(album) {
@@ -220,17 +258,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = "×";
       deleteBtn.classList.add("delete-embed-btn");
-      deleteBtn.style.position = "absolute";
-      deleteBtn.style.top = "8px";
-      deleteBtn.style.right = "8px";
-      deleteBtn.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
-      deleteBtn.style.border = "none";
-      deleteBtn.style.color = "white";
-      deleteBtn.style.borderRadius = "50%";
-      deleteBtn.style.width = "24px";
-      deleteBtn.style.height = "24px";
-      deleteBtn.style.cursor = "pointer";
-      deleteBtn.style.zIndex = "200";
+      Object.assign(deleteBtn.style, {
+        position: "absolute", top: "8px", right: "8px",
+        backgroundColor: "rgba(255, 0, 0, 0.8)", color: "white",
+        border: "none", borderRadius: "50%", width: "24px", height: "24px",
+        cursor: "pointer", zIndex: "200"
+      });
       deleteBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const csrfToken = await getCsrfToken();
