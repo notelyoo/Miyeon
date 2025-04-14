@@ -42,7 +42,7 @@
       "font-src 'self' https://fonts.gstatic.com; " +
       "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; " +
       "connect-src 'self'; " +
-      "img-src 'self' data: https://*.ggpht.com https://*.googleusercontent.com https://*.spotifycdn.com https://i.ytimg.com;");
+      "img-src 'self' data: https://*.ggpht.com https://*.googleusercontent.com https://*.spotifycdn.com https://i.ytimg.com https://img.youtube.com;");    
     next();
   });
   
@@ -234,10 +234,13 @@
     const { embedUrl } = req.body;
     if (!embedUrl) return res.status(400).json({ error: 'embedUrl is required' });
     db.run(`INSERT INTO videos (embedUrl) VALUES (?)`, [sanitizeInput(embedUrl)], function (err) {
-      if (err) return res.status(500).json({ error: 'Internal server error' });
+      if (err) {
+        console.error("❌ Erreur lors de l'insertion vidéo :", err.message);
+        return res.status(500).json({ error: 'Internal server error', details: err.message });
+      }
       res.json({ id: this.lastID, embedUrl });
     });
-  });
+  });  
   
   app.delete('/api/videos/:id', isAuthenticated, (req, res) => {
     const id = parseInt(req.params.id);

@@ -142,7 +142,20 @@
     text-align: center;
     transform: translateY(20px);
   }
-
+  
+  .video-thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+  }
+  
+  .video-thumbnail:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
   .video-list {
     display: flex;
     flex-wrap: wrap;
@@ -152,7 +165,6 @@
   .video-item {
     flex: 1 1 calc(50% - 10px);
     aspect-ratio: 16 / 9;
-    position: relative;
   }
   
   .video-item iframe {

@@ -1,9 +1,10 @@
+
 /**
   📁 File: responsive.css
   🧑‍💻 Developed by: Elyoo (NotElyoo)
   🌐 Website: https://miyeon.fr
   📬 Contact: contact@miyeon.fr
- */
+*/
 
 @media (max-width: 480px) {
   .banner {
@@ -18,6 +19,27 @@
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
+  }
+
+  .video-item {
+    width: 100%;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .video-item iframe,
+  .video-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    max-width: 100%;
+  }
+
+  #videoList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   #uploadBtn {
