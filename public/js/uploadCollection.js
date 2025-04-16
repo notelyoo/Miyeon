@@ -241,5 +241,33 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
   }
+
+  const deleteBtn = document.getElementById('deleteCardBtn');
+if (deleteBtn) {
+  deleteBtn.addEventListener('click', async () => {
+    const id = document.getElementById('editItemId').value;
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    
+    try {
+      const csrfToken = await getCsrfToken();
+      const res = await fetch(`/api/items/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': csrfToken }
+      });
+
+      if (res.ok) {
+        removeItemFromGallery(parseInt(id));
+        updateCardCount(getItems());
+        updateFilters();
+        closeEditModal();
+        showToast('delete', 'Card deleted!');
+      } else {
+        console.error('Failed to delete item');
+      }
+    } catch (err) {
+      console.error('Error deleting item:', err);
+    }
+  });
+}
   
   window.showToast = showToast;  
