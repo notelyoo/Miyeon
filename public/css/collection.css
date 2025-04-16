@@ -84,6 +84,30 @@ body.sidebar-open {
   overflow: hidden;
 }
 
+body.dark-mode .filter-option,
+body.dark-mode #groupList button,
+body.dark-mode #idolList button {
+  background-color: #2e2e2e;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+body.dark-mode .filter-option.selected,
+body.dark-mode #groupList button.selected,
+body.dark-mode #idolList button.selected {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+body.dark-mode #showAllBtn {
+  color: #ffffff;
+}
+
 .global-drop-overlay {
   display: none;
   position: fixed;
