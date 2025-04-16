@@ -7,11 +7,12 @@ It features a dynamic admin interface with upload modals, real-time filtering, a
 
 ## ✨ Features
 
+- 🌙 **Dark Mode Toggle** – Users can switch between light/dark themes (stored in localStorage)
 - 📸 **Photocard Collection Viewer** – Gallery view with real-time search, filtering, and sorting  
 - 🎵 **Music & Video Embeds** – Add your favorite YouTube videos and Spotify albums  
 - 🧳 **About Section** – Timeline of past concerts, travels, and personal highlights  
 - 👑 **Admin Interface** – Upload, edit, and delete cards directly from the UI  
-- 📱 **Fully Responsive** – Optimized layout for desktop, tablet, and mobile  
+- 📱 **Fully Responsive** – Optimized layout for desktop, tablet, and mobile, including dark-mode-aware sidebar  
 - 🔐 **Session-Based Authentication** – Secure login with admin-only routes  
 - 🗃️ **Local SQLite Database** – Stores collection data on disk  
 - 🧼 **Input Sanitization & CSRF Protection** – Secured backend handling user data  
@@ -45,18 +46,19 @@ miyeon/
 │   ├── favicon.ico              → Website favicon
 │   ├── css/                     → Modular CSS stylesheets
 │   │   ├── about.css            → Specific styles for the About page (profile, podium)
-│   │   ├── base.css             → Global design tokens, variables, resets
-│   │   ├── collection.css       → Styles for the collection gallery, modals, and sidebar
+│   │   ├── base.css             → Global design tokens, dark mode variables, resets
+│   │   ├── collection.css       → Gallery, modals, filter/sidebar styles (supports dark mode)
 │   │   ├── components.css       → Shared reusable UI blocks (cards, buttons, events)
-│   │   ├── home.css             → Styling for Home page embeds and layout
-│   │   ├── layout.css           → Page layout, navbar, container & column structure
+│   │   ├── home.css             → Layout and embeds (YouTube, Spotify)
+│   │   ├── layout.css           → Navbar, layout structure, dark mode integration
 │   │   ├── login.css            → Custom design for the login form and inputs
-│   │   └── responsive.css       → Media queries and responsive behavior
+│   │   └── responsive.css       → Responsive layout + dark mode sidebar styling
 │   ├── images/                  → All static images (profile, banners, photocard assets)
 │   ├── js/                      → Frontend JavaScript logic and UI interactivity
 │   │   ├── modules/             → Modularized gallery scripts
 │   │   │   ├── admin.js         → Admin login status, CSRF tokens, session management
 │   │   │   ├── counter.js       → Real-time photocard counter update
+│   │   │   ├── darkMode.js      → Handles theme toggle and persistence (light/dark mode)
 │   │   │   ├── filters.js       → Filter logic (group, idol, preorder, note, etc.)
 │   │   │   ├── gallery.js       → Full gallery rendering and delete logic
 │   │   │   ├── modal.js         → All modals (upload, edit, image) and toasts

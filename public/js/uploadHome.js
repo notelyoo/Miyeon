@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   fetchVideos();
   fetchAlbums();
 
-  // 🎬 YouTube
   const addVideoBtn = document.getElementById('addVideoBtn');
   const videoModal = document.getElementById('videoModal');
   const closeVideoModal = document.getElementById('closeVideoModal');
@@ -90,7 +89,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // 🎧 Spotify
   const albumForm = document.getElementById('albumForm');
   if (albumForm) {
     albumForm.addEventListener('submit', async (e) => {
@@ -137,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
 
-  // 🔁 Loaders
   function fetchVideos() {
     const videoList = document.getElementById('videoList');
     if (!videoList) return;

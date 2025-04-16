@@ -10,7 +10,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Collection • Miyeon.fr 🌸 — K-pop & Collection Gallery">
+  <meta property="og:description" content="Browse Elyoo’s K-pop photocard collection — exclusive picks, groups, and filters.">
+  <meta property="og:image" content="https://miyeon.fr/images/banner-embed.jpg">
+  <meta property="og:url" content="https://miyeon.fr/collection">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Miyeon.fr">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Collection • Miyeon.fr 🌸 — K-pop & Collection Gallery">
+  <meta name="twitter:description" content="Explore a visual world of K-pop, music and memories — curated by Elyoo.">
+  <meta name="twitter:image" content="https://miyeon.fr/images/banner-embed.jpg">
   <title>Miyeon - Collection</title>
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/components.css">
@@ -21,12 +40,13 @@
   <header>
     <nav>
       <ul>
-        <li><a href="/home">Home</a></li>
+        <li><a href="/home" class="active">Home</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/collection">Collection</a></li>
       </ul>
       <div class="admin-login"></div>
-    </nav>
+      <span class="theme-toggle" id="themeToggle" title="Switch theme">🌙</span>
+    </nav>    
   </header>
   <main>
     <div class="sidebar-toggle" id="sidebar‑toggle">☰ Filters</div>
@@ -154,6 +174,7 @@
     <p style="font-size: 0.9rem;">&copy; 2025 Miyeon. All rights reserved.</p>
   </footer>
   <script type="module" src="js/uploadCollection.js"></script>
+  <script src="/js/modules/darkMode.js"></script>
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
   <div id="globalDropOverlay" class="global-drop-overlay">📥 Drag & drop a picture</div>
   </body>

@@ -3,14 +3,33 @@
   🧑‍💻 Developed by: Elyoo (NotElyoo)
   🌐 Website: https://miyeon.fr
   📬 Contact: contact@miyeon.fr
-  ------------------------------------------------------->
+------------------------------------------------------->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Login • Miyeon.fr 🌸 — K-pop & Collection Gallery">
+  <meta property="og:description" content="Access the admin interface to manage albums, photocards and exclusive content.">
+  <meta property="og:image" content="https://miyeon.fr/images/banner-embed.jpg">
+  <meta property="og:url" content="https://miyeon.fr/login">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Miyeon.fr">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Login • Miyeon.fr 🌸 — K-pop & Collection Gallery">
+  <meta name="twitter:description" content="Explore a visual world of K-pop, music and memories — curated by Elyoo.">
+  <meta name="twitter:image" content="https://miyeon.fr/images/banner-embed.jpg">
   <title>Miyeon - Admin Login</title>
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/layout.css">
   <link rel="stylesheet" href="/css/components.css">
@@ -21,12 +40,12 @@
   <header>
     <nav>
       <ul>
-        <li><a href="/home">Home</a></li>
+        <li><a href="/home" class="active">Home</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/collection">Collection</a></li>
       </ul>
-      <div class="admin-login">
-      </div>
+      <div class="admin-login"></div>
+      <span class="theme-toggle" id="themeToggle" title="Switch theme">🌙</span>
     </nav>
   </header>
   <main>
@@ -41,5 +60,6 @@
   </main>
   <script src="js/login.js"></script>
   <script src="js/main.js"></script>
+  <script src="/js/modules/darkMode.js"></script>
 </body>
 </html>

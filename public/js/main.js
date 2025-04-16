@@ -130,4 +130,4 @@
       overlay.classList.remove('visible');
       collectionContainer.classList.remove('sidebar-open');
     });
-  });  
+  });
