@@ -80,6 +80,7 @@
   app.get('/collection', (req, res) => res.sendFile(path.join(__dirname, 'public', 'collection.html')));
   app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public', 'about.html')));
   app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
+  app.get('/legal', (req, res) => res.sendFile(path.join(__dirname, 'public', 'legal.html')));
   
   app.use(csrf());
   app.get('/api/csrf-token', (req, res) => res.json({ csrfToken: req.csrfToken() }));
