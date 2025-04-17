@@ -43,6 +43,7 @@ miyeon/
 │   ├── collection.html          → Photocard gallery with filters and admin actions
 │   ├── home.html                → Homepage with intro, video and album embeds
 │   ├── login.html               → Admin login form for access to protected features
+│   ├── legal.html               → Legal notice, privacy and terms (AGPL‑3.0)
 │   ├── favicon.ico              → Website favicon
 │   ├── css/                     → Modular CSS stylesheets
 │   │   ├── about.css            → Specific styles for the About page (profile, podium)
@@ -50,7 +51,7 @@ miyeon/
 │   │   ├── collection.css       → Gallery, modals, filter/sidebar styles (supports dark mode)
 │   │   ├── components.css       → Shared reusable UI blocks (cards, buttons, events)
 │   │   ├── home.css             → Layout and embeds (YouTube, Spotify)
-│   │   ├── layout.css           → Navbar, layout structure, dark mode integration
+│   │   ├── layout.css           → Navbar, sticky footer, dark mode layout
 │   │   ├── login.css            → Custom design for the login form and inputs
 │   │   └── responsive.css       → Responsive layout + dark mode sidebar styling
 │   ├── images/                  → All static images (profile, banners, photocard assets)
